@@ -1,14 +1,11 @@
-using RealChat.Hubs;
+using RealChat;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSignalR();
+
+var startup = new Startup(builder.Configuration);
+startup.ConfigureServices(builder.Services);
+
 var app = builder.Build();
-
-app.UseRouting();
-
-app.UseEndpoints(endPoints =>
-{
-    endPoints.MapHub<ChatHub>("/chat"); 
-});
+startup.Configure(app, app.Environment);
 
 app.Run();
